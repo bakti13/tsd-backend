@@ -3,7 +3,6 @@ package co.id.menanga.backend.controllers;
 import co.id.menanga.backend.model.Position;
 import co.id.menanga.backend.services.PositionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping(value = {"/api/v1"})
 public class EmployeeController {
 
-    @Autowired
-    private PositionService positionService;
+    private final PositionService positionService;
+
+    public EmployeeController(PositionService positionService) {
+        this.positionService = positionService;
+    }
 
     private void setJsonResponse(Object object, HttpServletResponse response) {
         try {
@@ -38,6 +40,17 @@ public class EmployeeController {
     public void selectLokasi(HttpServletResponse response) {
         List<Position> position = positionService.getList();
         setJsonResponse(position, response);
+    }
+
+    @RequestMapping(produces = "application/json")
+    public void mainRoot(HttpServletResponse response) {
+//        List<String> position = positionService.getList();
+//        setJsonResponse(position, response);
+        try {
+            response.getWriter().print("{\"result\": \"success\", \"message\": \"backend tsd\"}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

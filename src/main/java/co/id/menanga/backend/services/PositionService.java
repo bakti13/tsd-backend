@@ -2,8 +2,6 @@ package co.id.menanga.backend.services;
 
 import co.id.menanga.backend.dao.PositionDao;
 import co.id.menanga.backend.model.Position;
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
