@@ -32,8 +32,10 @@ public class Employee implements Serializable {
 
     @Setter
     @Getter
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonProperty
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "POSITION_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore

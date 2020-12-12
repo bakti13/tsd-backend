@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PositionDao extends JpaRepository<Position, Long> {
-//
-//    @Query(value = "SELECT * FROM t1_position",
-//            nativeQuery = true)
-//    List<Position> getlist();
+public interface PositionDAO extends JpaRepository<Position, Long> {
+
+    @Query(value = "SELECT * FROM t1_position",
+            nativeQuery = true)
+    List<Position> getlist();
 }
