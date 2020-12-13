@@ -1,6 +1,5 @@
 package co.id.menanga.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +16,7 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
+    @Setter
     @Column(name = "ID")
     private Long id;
 
@@ -33,12 +33,11 @@ public class Employee implements Serializable {
     @Setter
     @Getter
     @JsonProperty
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "POSITION_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Position position;
 
     @Setter

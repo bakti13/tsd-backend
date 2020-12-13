@@ -8,15 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface EmployeeDAO extends JpaRepository<Employee, Long> {
-
-    // get list employee
-//    List<Employee> findAllBy(@Param("start") int start, @Param("length") int length, @Param("filter") String search);
-
-    Page<Employee> findAllBy(Pageable pageable);
 
     @Query(value = "SELECT * " +
             "FROM t2_employee t2 INNER JOIN t1_position t1 ON t2.POSITION_ID = t1.ID " +
@@ -25,13 +18,8 @@ public interface EmployeeDAO extends JpaRepository<Employee, Long> {
             nativeQuery = true)
     Page<Employee> getListForPagination(@Param("cari") String search, Pageable pageable);
 
-    @Query(value = "SELECT * FROM t2_employee t2 WHERE t2.ID = ? ",nativeQuery = true)
+    @Query(value = "SELECT * FROM t2_employee t2 WHERE t2.ID = ? ", nativeQuery = true)
     Employee getById(Long id);
 
-
-
-    //
-//    void insert(Employee employee);
-//    void update(Employee employee);
-//    void deleta(Employee employee);
+    boolean existsByIdNumber(int id);
 }

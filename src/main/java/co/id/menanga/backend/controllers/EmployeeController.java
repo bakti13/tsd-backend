@@ -1,11 +1,12 @@
 package co.id.menanga.backend.controllers;
 
+import co.id.menanga.backend.model.Datatables;
 import co.id.menanga.backend.model.Employee;
 import co.id.menanga.backend.model.Position;
+import co.id.menanga.backend.model.ResponseAPI;
 import co.id.menanga.backend.services.EmployeeService;
 import co.id.menanga.backend.services.PositionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,16 +45,15 @@ public class EmployeeController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"all-employee"}, produces = "application/json")
-    public Page<Employee> index(HttpServletResponse response,
-                      @RequestParam(value = "start", defaultValue = "0") int page,
+    public void index(HttpServletResponse response, @RequestParam("draw") int draw,
+//                                @RequestParam(value = "start", defaultValue = "0") int page,
                       @RequestParam(value = "length", defaultValue = "10") int size,
                       @RequestParam(value = "search[value]", defaultValue = "") String search) {
-        Page<Employee> employees = employeeService.getListForPagination(page, size, search);
-        setJsonResponse(employees, response);
-        return employees;
+        Datatables data = employeeService.getListForPagination(draw, size, search);
+        setJsonResponse(data, response);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = {"get-employee-by-id/{id}"}, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = {"get-employee/{id}"}, produces = "application/json")
     public Employee getEmployeById(HttpServletResponse response, @PathVariable("id") Long id) {
         Employee employee = employeeService.getById(id);
         setJsonResponse(employee, response);
@@ -61,13 +61,21 @@ public class EmployeeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"create-employee"}, produces = "application/json")
-    public Employee insert(@RequestBody Employee employee) {
-        System.out.println("employee.getPosition() = " + employee.getPosition());
-        System.out.println("employee.getName() = " + employee.getName());
+    public void insert(HttpServletResponse response, @RequestBody Employee employee) {
+        ResponseAPI result = employeeService.insert(employee);
+        setJsonResponse(result, response);
+    }
 
-        Employee result = employeeService.insert(employee);
-//        setJsonResponse(employee, response);
-        return result;
+    @RequestMapping(method = RequestMethod.PUT, value = {"update-employee/{id}"}, produces = "application/json")
+    public void update(HttpServletResponse response, @PathVariable Long id, @RequestBody Employee employee) {
+        ResponseAPI result = employeeService.update(employee, id);
+        setJsonResponse(result, response);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = {"delete-employee/{id}"}, produces = "application/json")
+    public void delete(HttpServletResponse response, @PathVariable Long id) {
+        ResponseAPI result = employeeService.delete(id);
+        setJsonResponse(result, response);
     }
 
 
@@ -79,12 +87,6 @@ public class EmployeeController {
 
     @RequestMapping(produces = "application/json")
     public void mainRoot(HttpServletResponse response) {
-        try {
-            response.getWriter().print("{\"result\": \"success\", \"message\": \"backend tsd\"}");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setJsonResponse(new ResponseAPI("00", "Success"), response);
     }
-
-
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface PositionDAO extends JpaRepository<Position, Long> {
 
-    @Query(value = "SELECT * FROM t1_position",
+    @Query(value = "SELECT * FROM t1_position WHERE IS_DELETE = 0",
             nativeQuery = true)
     List<Position> getlist();
 }
