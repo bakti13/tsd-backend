@@ -46,10 +46,10 @@ public class EmployeeController {
 
     @RequestMapping(method = RequestMethod.GET, value = {"all-employee"}, produces = "application/json")
     public void index(HttpServletResponse response, @RequestParam("draw") int draw,
-//                                @RequestParam(value = "start", defaultValue = "0") int page,
+                    @RequestParam(value = "start", defaultValue = "0") int page,
                       @RequestParam(value = "length", defaultValue = "10") int size,
                       @RequestParam(value = "search[value]", defaultValue = "") String search) {
-        Datatables data = employeeService.getListForPagination(draw, size, search);
+        Datatables data = employeeService.getListForPagination(page, size, search);
         setJsonResponse(data, response);
     }
 
